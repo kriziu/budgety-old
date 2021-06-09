@@ -10,7 +10,12 @@ import { CSSTransition } from 'react-transition-group';
 import Button from '../Button/Button';
 import BudgetModal from '../Modal/BudgetModal';
 import { useDispatch } from 'react-redux';
-import { BudgetProps, deleteBudget, editBudget } from '../../actions';
+import {
+  BudgetProps,
+  deleteBudget,
+  editBudget,
+  transactionsChange,
+} from '../../actions';
 import { setMoneyColor } from '../../utils/functions';
 import '../styles/animations.css';
 
@@ -27,12 +32,14 @@ const Budget: FC<BudgetProps> = ({ id, title, amount, date }): JSX.Element => {
         title: newTitle,
         amount: {
           actual: newAmount,
-          starting: amount.starting,
+          starting: newAmount,
           diff: amount.diff,
         },
         date,
       })
     );
+
+    dispatch(transactionsChange());
   };
 
   const diffDisplay = {
@@ -86,7 +93,7 @@ const Budget: FC<BudgetProps> = ({ id, title, amount, date }): JSX.Element => {
         <BudgetModal
           close={handleModalOpenButton}
           title={title}
-          amount={amount.actual}
+          amount={amount.starting}
           id={id}
           onDelete={() => dispatch(deleteBudget(id))}
           onSave={handleSaveButton}

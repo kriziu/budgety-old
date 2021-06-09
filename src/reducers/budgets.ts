@@ -16,7 +16,6 @@ export const budgetsReducer = (state: BudgetProps[] = [], action: Action) => {
 
     // EDITING
     case ActionTypes.editBudget:
-      action.payload.amount.diff = calcDiffAmount(action.payload);
       newState = state.map((budget: BudgetProps) => {
         if (budget.id === action.payload.id) {
           return action.payload;
