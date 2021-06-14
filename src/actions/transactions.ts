@@ -1,7 +1,7 @@
 import { store } from '..';
 import { ActionTypes } from './';
 
-export interface Transaction {
+export interface TransactionType {
   id: number;
   budgetId: number;
   title: string;
@@ -11,7 +11,7 @@ export interface Transaction {
 
 export interface AddTransactionAction {
   type: ActionTypes.addTransaction;
-  payload: Transaction;
+  payload: TransactionType;
 }
 
 // export interface EditTransactionAction {
@@ -26,11 +26,11 @@ export interface DeleteTransactionAction {
 
 export interface TransactionsChangeAction {
   type: ActionTypes.transactionsChange;
-  payload: Transaction[];
+  payload: TransactionType[];
 }
 
 export const addTransaction = (
-  transaction: Transaction
+  transaction: TransactionType
 ): AddTransactionAction => {
   return {
     type: ActionTypes.addTransaction,
@@ -55,6 +55,6 @@ export const deleteTransaction = (id: number): DeleteTransactionAction => {
 export const transactionsChange = (): TransactionsChangeAction => {
   return {
     type: ActionTypes.transactionsChange,
-    payload: store.getState().transaction,
+    payload: store.getState().transactions,
   };
 };

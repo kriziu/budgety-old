@@ -1,15 +1,15 @@
 import { combineReducers } from 'redux';
-import { BudgetProps } from '../actions';
-import { Transaction } from '../actions/transactions';
+import { BudgetType } from '../actions';
+import { TransactionType } from '../actions/transactions';
 import { budgetsReducer } from './budgets';
 import { transactionReducer } from './transactions';
 
 export interface StoreState {
-  budgets: BudgetProps[];
-  transaction: Transaction[];
+  budgets: BudgetType[];
+  transactions: TransactionType[];
 }
 
 export const reducers = combineReducers<StoreState>({
   budgets: budgetsReducer,
-  transaction: transactionReducer,
+  transactions: transactionReducer,
 });

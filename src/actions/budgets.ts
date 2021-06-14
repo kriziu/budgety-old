@@ -1,6 +1,6 @@
 import { ActionTypes } from './';
 
-export interface BudgetProps {
+export interface BudgetType {
   id: number;
   title: string;
   amount: { actual: number; starting: number; diff: number };
@@ -9,12 +9,12 @@ export interface BudgetProps {
 
 export interface AddBudgetAction {
   type: ActionTypes.addBudget;
-  payload: BudgetProps;
+  payload: BudgetType;
 }
 
 export interface EditBudgetAction {
   type: ActionTypes.editBudget;
-  payload: BudgetProps;
+  payload: BudgetType;
 }
 
 export interface DeleteBudgetAction {
@@ -22,14 +22,14 @@ export interface DeleteBudgetAction {
   payload: number;
 }
 
-export const addBudget = (budget: BudgetProps): AddBudgetAction => {
+export const addBudget = (budget: BudgetType): AddBudgetAction => {
   return {
     type: ActionTypes.addBudget,
     payload: budget,
   };
 };
 
-export const editBudget = (budget: BudgetProps): EditBudgetAction => {
+export const editBudget = (budget: BudgetType): EditBudgetAction => {
   return {
     type: ActionTypes.editBudget,
     payload: budget,

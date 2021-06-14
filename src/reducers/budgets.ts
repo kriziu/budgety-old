@@ -1,22 +1,22 @@
-import { Action, ActionTypes, BudgetProps, Transaction } from '../actions';
+import { Action, ActionTypes, BudgetType, TransactionType } from '../actions';
 import { getUniqueId } from '../utils/functions';
 
-const calcDiffAmount = ({ amount }: BudgetProps): number => {
+const calcDiffAmount = ({ amount }: BudgetType): number => {
   return amount.actual - amount.starting;
 };
 
-export const budgetsReducer = (state: BudgetProps[] = [], action: Action) => {
-  let newState: BudgetProps[];
+export const budgetsReducer = (state: BudgetType[] = [], action: Action) => {
+  let newState: BudgetType[];
 
   switch (action.type) {
     // ADDING
     case ActionTypes.addBudget:
-      action.payload.id = getUniqueId<BudgetProps>(state);
+      action.payload.id = getUniqueId<BudgetType>(state);
       return [...state, action.payload];
 
     // EDITING
     case ActionTypes.editBudget:
-      newState = state.map((budget: BudgetProps) => {
+      newState = state.map((budget: BudgetType) => {
         if (budget.id === action.payload.id) {
           return action.payload;
         } else return budget;
@@ -25,16 +25,14 @@ export const budgetsReducer = (state: BudgetProps[] = [], action: Action) => {
 
     // REMOVING
     case ActionTypes.removeBudget:
-      return state.filter(
-        (budget: BudgetProps) => budget.id !== action.payload
-      );
+      return state.filter((budget: BudgetType) => budget.id !== action.payload);
 
     // TRANSACTION CHANGE
     case ActionTypes.transactionsChange:
-      newState = state.map((budget: BudgetProps) => {
+      newState = state.map((budget: BudgetType) => {
         budget.amount.actual = budget.amount.starting; // RESET
 
-        action.payload.forEach((transaction: Transaction) => {
+        action.payload.forEach((transaction: TransactionType) => {
           if (transaction.budgetId === budget.id) {
             budget.amount.actual += transaction.amount;
           }

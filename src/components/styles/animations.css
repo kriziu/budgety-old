@@ -1,5 +1,5 @@
 .fade-enter {
-  opacity: 0.01;
+  opacity: 0;
 }
 
 .fade-enter-active {
@@ -8,10 +8,32 @@
 }
 
 .fade-exit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   opacity: 1;
 }
 
 .fade-exit-active {
-  opacity: 0.01;
+  opacity: 0;
+  transition: all 0.2s ease-out;
+}
+
+.slide-enter {
+  transform: translateY(100%);
+}
+
+.slide-enter-active {
+  transform: translateY(0);
+  transition: all 0.2s ease-out;
+}
+
+.slide-exit {
+  transform: translateY(0);
+}
+
+.slide-exit-active {
+  transform: translateY(100%);
   transition: all 0.2s ease-out;
 }

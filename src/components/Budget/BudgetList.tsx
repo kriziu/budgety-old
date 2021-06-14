@@ -14,14 +14,7 @@ const BudgetList: FC = (): JSX.Element => {
     if (budgets)
       return budgets.map(({ id, title, amount, date }) => {
         return (
-          <CSSTransition
-            key={id}
-            timeout={100}
-            classNames={{
-              enter: 'fade-enter',
-              enterActive: 'fade-enter-active',
-            }}
-          >
+          <CSSTransition key={id} timeout={200} classNames="slide">
             <Budget id={id} title={title} amount={amount} date={date} />
           </CSSTransition>
         );

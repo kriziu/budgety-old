@@ -3,7 +3,7 @@ import React, { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { addBudget } from '../../actions';
-import { setMoneyColor } from '../../utils/functions';
+import { handleEnterPressed, setMoneyColor } from '../../utils/functions';
 import AllMoney from '../AllMoney/AllMoney';
 import Button from '../Button/Button';
 
@@ -68,6 +68,7 @@ const InputBudget: FC = (): JSX.Element => {
           id="budgetTitle"
           value={budgetTitle}
           onChange={handleBudgetTitleChange}
+          onKeyPress={e => handleEnterPressed(e, handleButtonClick)}
         />
         {budgetTitleChecker && (
           <p className="text-red-500 text-xs">Please fill out this field.</p>
@@ -78,14 +79,13 @@ const InputBudget: FC = (): JSX.Element => {
           Amount
         </label>
         <input
-          className={`${setMoneyColor(
-            parseFloat(budgetAmount)
-          )} transition focus:outline-none focus:shadow-outline focus:border-blue-300 w-full border rounded-lg px-5 py-1 my-2 h-10`}
+          className={`${setMoneyColor(parseFloat(budgetAmount))} input`}
           type="number"
           placeholder="Enter amount"
           id="budgetAmount"
           value={budgetAmount}
           onChange={handleBudgetAmountChange}
+          onKeyPress={e => handleEnterPressed(e, handleButtonClick)}
         />
         {budgetAmountChecker && (
           <p className="text-red-500 text-xs">Please fill out this field.</p>

@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { MenuIcon, XIcon } from '@heroicons/react/solid';
 
 import '../styles/animations.css';
+import { Link } from 'react-router-dom';
 
 interface NavBarProps {
   navOpened: boolean;
@@ -10,7 +11,6 @@ interface NavBarProps {
 }
 
 const NavBar: FC<NavBarProps> = ({ navOpened, onIconClick }): JSX.Element => {
-  // TODO ROUTING
   return (
     <nav className="flex items-center justify-between flex-wrap mb-10 text-xl">
       <h1 className="text-4xl">Budgety</h1>
@@ -29,27 +29,27 @@ const NavBar: FC<NavBarProps> = ({ navOpened, onIconClick }): JSX.Element => {
         }`}
       >
         <div className="flex flex-col sm:flex-row justify-center sm:justify-between">
-          <a href="/" className="hover:underline text-center mt-10 md:mt-0">
+          <Link to="/" className="hover:underline text-center mt-10 md:mt-0">
             Overview
-          </a>
-          <a
-            href="/"
+          </Link>
+          <Link
+            to="/budgets"
             className="sm:ml-6 lg:ml-10 hover:underline text-center mt-10 md:mt-0"
           >
             Budgets
-          </a>
-          <a
-            href="/"
+          </Link>
+          <Link
+            to="/payments"
             className="sm:ml-6 lg:ml-10 hover:underline text-center mt-10 md:mt-0"
           >
             Payments
-          </a>
-          <a
-            href="/"
+          </Link>
+          <Link
+            to="/statistics"
             className="sm:ml-6 lg:ml-10 hover:underline text-center mt-10 md:mt-0"
           >
             Statistics
-          </a>
+          </Link>
         </div>
       </div>
     </nav>
