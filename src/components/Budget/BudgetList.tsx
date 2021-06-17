@@ -12,10 +12,10 @@ const BudgetList: FC = (): JSX.Element => {
 
   const renderBudgets = () => {
     if (budgets)
-      return budgets.map(({ id, title, amount, date }) => {
+      return budgets.map(budget => {
         return (
-          <CSSTransition key={id} timeout={200} classNames="slide">
-            <Budget id={id} title={title} amount={amount} date={date} />
+          <CSSTransition key={budget.id} timeout={200} classNames="slide">
+            <Budget {...budget} />
           </CSSTransition>
         );
       });

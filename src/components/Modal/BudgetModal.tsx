@@ -6,7 +6,7 @@ import { CashIcon, CogIcon, XIcon } from '@heroicons/react/solid';
 import { addTransaction, transactionsChange } from '../../actions';
 import Button from '../Button/Button';
 import Modal from './Modal';
-import { setMoneyColor } from '../../utils/functions';
+import { setMoneyColor } from '../../utils/ui';
 
 interface BudgetModalProps {
   close: () => void;
@@ -184,7 +184,7 @@ const BudgetModal: FC<BudgetModalProps> = ({
           <Button
             title="Cancel"
             className="mt-2 text-gray-900 hover:bg-gray-900 hover:text-white border-2 border-gray-900 active:bg-gray-700 focus:outline-none focus:shadow-outline focus:border-gray-300"
-            onClick={onDelete}
+            onClick={close}
           />
           <div className="w-10"></div>
           <Button

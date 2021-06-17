@@ -6,6 +6,7 @@ import App from './components/App';
 
 import { reducers } from './reducers';
 import { Provider } from 'react-redux';
+import { loadState, saveState } from './localstorage/localStorage';
 
 declare global {
   interface Window {
@@ -15,7 +16,17 @@ declare global {
 
 const composeEncharcers =
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-export const store = createStore(reducers, composeEncharcers());
+
+const persistedState = loadState();
+
+export const store = createStore(reducers, persistedState, composeEncharcers());
+store.subscribe((): void => {
+  const newState = store.getState();
+  saveState({
+    budgets: newState.budgets,
+    transactions: newState.transactions,
+  });
+});
 
 ReactDOM.render(
   <Provider store={store}>

@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { useSelector } from 'react-redux';
 import { StoreState } from '../../reducers';
-import { setMoneyColor } from '../../utils/functions';
+import { setMoneyColor } from '../../utils/ui';
 
 const AllMoney: FC = (): JSX.Element => {
   const budgets = useSelector((state: StoreState) => state.budgets);

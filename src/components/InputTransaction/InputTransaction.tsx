@@ -8,11 +8,9 @@ import {
   transactionsChange,
 } from '../../actions';
 import { StoreState } from '../../reducers';
-import {
-  getUniqueId,
-  handleEnterPressed,
-  setMoneyColor,
-} from '../../utils/functions';
+import { getUniqueId } from '../../utils/utility';
+import { handleEnterPressed } from '../../utils/handlers';
+import { setMoneyColor } from '../../utils/ui';
 import AllMoney from '../AllMoney/AllMoney';
 import BudgetInfo from '../Budget/BudgetInfo';
 import Button from '../Button/Button';

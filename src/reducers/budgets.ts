@@ -1,5 +1,5 @@
 import { Action, ActionTypes, BudgetType, TransactionType } from '../actions';
-import { getUniqueId } from '../utils/functions';
+import { getUniqueId } from '../utils/utility';
 
 const calcDiffAmount = ({ amount }: BudgetType): number => {
   return amount.actual - amount.starting;

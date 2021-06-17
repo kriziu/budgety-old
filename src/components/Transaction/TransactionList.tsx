@@ -21,7 +21,12 @@ const TransactionList: FC = (): JSX.Element => {
     });
   };
 
-  return <ul className="mt-20 w-1/2">{renderTransactions()}</ul>;
+  return (
+    <>
+      <h1 className="text-2xl mt-12">Transactions history</h1>
+      <ul className="mt-4 w-full lg:w-1/2">{renderTransactions()}</ul>
+    </>
+  );
 };
 
 export default TransactionList;

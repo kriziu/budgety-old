@@ -30,7 +30,7 @@ const Budget: FC<BudgetType> = ({ id, title, amount, date }): JSX.Element => {
           starting: newAmount,
           diff: amount.diff,
         },
-        date,
+        date: new Date(),
       })
     );
 

@@ -1,5 +1,5 @@
 import { Action, ActionTypes, TransactionType } from '../actions';
-import { getUniqueId } from '../utils/functions';
+import { getUniqueId } from '../utils/utility';
 
 export const transactionReducer = (
   state: TransactionType[] = [],

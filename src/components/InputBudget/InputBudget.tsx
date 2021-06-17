@@ -3,7 +3,8 @@ import React, { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { addBudget } from '../../actions';
-import { handleEnterPressed, setMoneyColor } from '../../utils/functions';
+import { setMoneyColor } from '../../utils/ui';
+import { handleEnterPressed } from '../../utils/handlers';
 import AllMoney from '../AllMoney/AllMoney';
 import Button from '../Button/Button';
 
