@@ -1,16 +1,21 @@
-import { FC } from 'react';
+import { useEffect, useState, FC } from 'react';
 
 import { useSelector } from 'react-redux';
+
 import { StoreState } from '../../reducers';
 import { setMoneyColor } from '../../utils/ui';
 
 const AllMoney: FC = (): JSX.Element => {
+  const [money, setMoney] = useState(0);
   const budgets = useSelector((state: StoreState) => state.budgets);
 
-  let money = 0;
-  budgets.forEach(budget => {
-    money += budget.amount.actual;
-  });
+  useEffect(() => {
+    let i = 0;
+
+    budgets.forEach(budget => (i += budget.amount.actual));
+
+    setMoney(i);
+  }, [budgets]);
 
   return (
     <div className="text-center">

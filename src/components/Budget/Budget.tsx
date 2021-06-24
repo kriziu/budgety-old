@@ -4,21 +4,23 @@ import { CSSTransition } from 'react-transition-group';
 
 import Button from '../Button/Button';
 import BudgetModal from '../Modal/BudgetModal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   BudgetType,
   deleteBudget,
+  deleteTransaction,
   editBudget,
   transactionsChange,
 } from '../../actions';
-import '../styles/animations.css';
 import BudgetInfo from './BudgetInfo';
+import { StoreState } from '../../reducers';
 
 const Budget: FC<BudgetType> = ({ id, title, amount, date }): JSX.Element => {
   const dispatch = useDispatch();
   const [modalOpened, setModalOpened] = useState(false);
+  const transactions = useSelector((state: StoreState) => state.transactions);
 
-  const handleModalOpenButton = (): void => setModalOpened(!modalOpened);
+  const handleModalToggleButton = (): void => setModalOpened(!modalOpened);
 
   const handleSaveButton = (newTitle: string, newAmount: number): void => {
     dispatch(
@@ -37,13 +39,23 @@ const Budget: FC<BudgetType> = ({ id, title, amount, date }): JSX.Element => {
     dispatch(transactionsChange());
   };
 
+  const handleDeleteButton = (): void => {
+    dispatch(deleteBudget(id));
+
+    transactions.forEach(transaction => {
+      if (transaction.budgetId === id)
+        dispatch(deleteTransaction(transaction.id));
+    });
+  };
+
   return (
-    <div className="w-56 shadow-2xl rounded-2xl text-center p-5 bg-white bg-opacity-50">
+    <div className="w-56 shadow-2xl rounded-2xl text-center p-5 bg-white">
       <BudgetInfo budget={{ id, title, amount, date }} />
       <Button
         title="Edit"
-        className="mt-2 bg-gray-900 text-white hover:bg-black border-4 border-gray-900 active:bg-gray-700 focus:outline-none focus:shadow-outline focus:border-gray-300"
-        onClick={handleModalOpenButton}
+        className="mt-1"
+        color="gray-900"
+        onClick={handleModalToggleButton}
       />
 
       <CSSTransition
@@ -53,11 +65,11 @@ const Budget: FC<BudgetType> = ({ id, title, amount, date }): JSX.Element => {
         unmountOnExit
       >
         <BudgetModal
-          close={handleModalOpenButton}
+          onClose={handleModalToggleButton}
           title={title}
           amount={amount.starting}
           id={id}
-          onDelete={() => dispatch(deleteBudget(id))}
+          onDelete={handleDeleteButton}
           onSave={handleSaveButton}
         />
       </CSSTransition>

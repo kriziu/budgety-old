@@ -4,9 +4,9 @@ import { useDispatch } from 'react-redux';
 
 import { addBudget } from '../../actions';
 import { setMoneyColor } from '../../utils/ui';
-import { handleEnterPressed } from '../../utils/handlers';
 import AllMoney from '../AllMoney/AllMoney';
 import Button from '../Button/Button';
+import Input from '../Input/Input';
 
 const InputBudget: FC = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -32,7 +32,7 @@ const InputBudget: FC = (): JSX.Element => {
       : setBudgetAmountChecker(true);
   };
 
-  const handleButtonClick = (): void => {
+  const handleButtonAddClick = (): void => {
     !budgetTitle && setBudgetTitleChecker(true);
     !budgetAmount && setBudgetAmountChecker(true);
 
@@ -58,45 +58,28 @@ const InputBudget: FC = (): JSX.Element => {
   return (
     <div className="w-full sm:w-3/5 2xl:w-2/5 m-auto">
       <AllMoney />
-      <div className="my-5">
-        <label htmlFor="budgetTitle" className="text-xl">
-          Budget
-        </label>
-        <input
-          className="input"
-          type="text"
-          placeholder="Enter a budget"
-          id="budgetTitle"
-          value={budgetTitle}
-          onChange={handleBudgetTitleChange}
-          onKeyPress={e => handleEnterPressed(e, handleButtonClick)}
-        />
-        {budgetTitleChecker && (
-          <p className="text-red-500 text-xs">Please fill out this field.</p>
-        )}
-      </div>
-      <div className="my-5">
-        <label htmlFor="budgetAmount" className="text-xl">
-          Amount
-        </label>
-        <input
-          className={`${setMoneyColor(parseFloat(budgetAmount))} input`}
-          type="number"
-          placeholder="Enter amount"
-          id="budgetAmount"
-          value={budgetAmount}
-          onChange={handleBudgetAmountChange}
-          onKeyPress={e => handleEnterPressed(e, handleButtonClick)}
-        />
-        {budgetAmountChecker && (
-          <p className="text-red-500 text-xs">Please fill out this field.</p>
-        )}
-      </div>
-      <Button
-        title="Add"
-        className="bg-green-500 text-white hover:bg-green-600 hover:border-green-600 border-4 border-green-500 focus:outline-none focus:shadow-outline focus:border-gray-300 active:bg-green-400"
-        onClick={handleButtonClick}
+      <Input
+        value={budgetTitle}
+        handleChange={handleBudgetTitleChange}
+        type="text"
+        warningShown={budgetTitleChecker}
+        placeholder="Enter budget title"
+        labelTitle="Budget"
+        handleEnterClick={handleButtonAddClick}
+        className="my-5"
       />
+      <Input
+        value={budgetAmount}
+        type="number"
+        handleChange={handleBudgetAmountChange}
+        warningShown={budgetAmountChecker}
+        placeholder="Enter amount"
+        labelTitle="Amount"
+        handleEnterClick={handleButtonAddClick}
+        className="my-5"
+        inputClassName={setMoneyColor(parseFloat(budgetAmount))}
+      />
+      <Button title="Add" color="green-500" onClick={handleButtonAddClick} />
     </div>
   );
 };

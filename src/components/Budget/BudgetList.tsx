@@ -5,7 +5,6 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import { StoreState } from '../../reducers';
 import Budget from './Budget';
-import '../styles/animations.css';
 
 const BudgetList: FC = (): JSX.Element => {
   const budgets = useSelector((state: StoreState) => state.budgets);

@@ -9,12 +9,12 @@ import './styles/animations.css';
 const App: FC = (): JSX.Element => {
   const [navOpened, setNavOpened] = useState(false);
 
-  const handleNavClick = (): void => setNavOpened(!navOpened);
+  const handleNavToggleClick = (): void => setNavOpened(!navOpened);
 
   return (
     <BrowserRouter>
       <div className="w-full xl:w-3/4 m-auto p-8">
-        <NavBar navOpened={navOpened} onIconClick={handleNavClick} />
+        <NavBar navOpened={navOpened} onIconClick={handleNavToggleClick} />
         <main
           className={`transition-all transform md:-translate-y-0 ${
             navOpened ? '-translate-y-0' : 'sm:-translate-y-20 -translate-y-72'

@@ -17,9 +17,9 @@ const BudgetInfo: FC<BudgetInfoProps> = ({ budget }): JSX.Element => {
       <h1 className={`text-3xl ${setMoneyColor(amount.actual)} mt-1`}>
         {amount.actual.toFixed(2)}$
       </h1>
-      <div className="flex w-2/3 m-auto justify-around mt-1">
+      <span className="flex w-2/3 m-auto justify-around mt-1">
         {diffDisplay(amount.diff)}
-      </div>
+      </span>
     </div>
   );
 };

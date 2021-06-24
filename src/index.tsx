@@ -20,11 +20,11 @@ const composeEncharcers =
 const persistedState = loadState();
 
 export const store = createStore(reducers, persistedState, composeEncharcers());
+
 store.subscribe((): void => {
   const newState = store.getState();
   saveState({
-    budgets: newState.budgets,
-    transactions: newState.transactions,
+    ...newState,
   });
 });
 

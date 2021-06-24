@@ -1,8 +1,11 @@
 import { FC } from 'react';
+
 import { Route, Switch, useLocation } from 'react-router';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+
 import BudgetsPage from '../pages/BudgetsPage';
 import PaymentsPage from '../pages/PaymentsPage';
+import StatisticsPage from '../pages/StatisticsPage';
 
 import './styles/animations.css';
 
@@ -23,7 +26,7 @@ const Pages: FC = (): JSX.Element => {
             <PaymentsPage />
           </Route>
           <Route exact path="/statistics">
-            <BudgetsPage />
+            <StatisticsPage />
           </Route>
         </Switch>
       </CSSTransition>

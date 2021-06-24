@@ -7,27 +7,29 @@ import { addTransaction, transactionsChange } from '../../actions';
 import Button from '../Button/Button';
 import Modal from './Modal';
 import { setMoneyColor } from '../../utils/ui';
+import ButtonSecondary from '../Button/ButtonSecondary';
+import Input from '../Input/Input';
 
 interface BudgetModalProps {
-  close: () => void;
   title: string;
   amount: number;
   id: number;
+  onClose: () => void;
   onDelete: () => void;
   onSave: (title: string, amount: number) => void;
 }
 
 const BudgetModal: FC<BudgetModalProps> = ({
-  close,
   title,
   amount,
   id,
+  onClose,
   onDelete,
   onSave,
 }): JSX.Element => {
   // STATE
-  const [newTitle, setNewTitle] = useState(title);
-  const [newAmount, setNewAmount] = useState(amount.toFixed(2));
+  const [newBudgetTitle, setNewBudgetTitle] = useState(title);
+  const [newBudgetAmount, setNewBudgetAmount] = useState(amount.toFixed(2));
 
   const [transactionTitle, settransactionTitle] = useState('');
   const [transactionAmount, setTransactionAmount] = useState('');
@@ -37,13 +39,13 @@ const BudgetModal: FC<BudgetModalProps> = ({
   const dispatch = useDispatch();
 
   // HANDLE METHODS
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setNewTitle(e.target.value);
+  const handleBudgetTitleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setNewBudgetTitle(e.target.value);
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setNewAmount(e.target.value);
+  const handleBudgetAmountChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setNewBudgetAmount(e.target.value);
 
-  const handletransactionTitleChange = (
+  const handleTransactionTitleChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => settransactionTitle(e.target.value);
 
@@ -53,14 +55,14 @@ const BudgetModal: FC<BudgetModalProps> = ({
 
   const handleEditClick = (): void => setEdit(!edit);
 
-  const handleButtonSaveClick = (): void => {
-    if (newTitle && !isNaN(parseFloat(newAmount))) {
-      onSave(newTitle, parseFloat(newAmount));
-      close();
+  const handleButtonSaveBudgetClick = (): void => {
+    if (newBudgetTitle && !isNaN(parseFloat(newBudgetAmount))) {
+      onSave(newBudgetTitle, parseFloat(newBudgetAmount));
+      onClose();
     }
   };
 
-  const handleButtonAddClick = (): void => {
+  const handleButtonAddTransactionClick = (): void => {
     if (!isNaN(parseFloat(transactionAmount))) {
       dispatch(
         addTransaction({
@@ -73,124 +75,70 @@ const BudgetModal: FC<BudgetModalProps> = ({
       );
 
       dispatch(transactionsChange());
-      close();
+      onClose();
     }
   };
 
   // RENDER METHODS
-  const renderBudgetEdit = (): JSX.Element => {
+  const renderInputOptions = (): JSX.Element => {
+    const options = {
+      title: edit ? newBudgetTitle : transactionTitle,
+      handleTitleChange: edit
+        ? handleBudgetTitleChange
+        : handleTransactionTitleChange,
+      amount: edit ? newBudgetAmount : transactionAmount,
+      handleAmountChange: edit
+        ? handleBudgetAmountChange
+        : handleTransactionAmountChange,
+      handleButtonPrimaryClick: edit
+        ? handleButtonSaveBudgetClick
+        : handleButtonAddTransactionClick,
+      handleButtonSecondaryClick: edit ? onDelete : onClose,
+    };
+
     return (
       <>
         <div className="items-center flex flex-col">
-          <div className="w-2/3 mb-5">
-            <label htmlFor="title" className="text-xl">
-              Budget name
-            </label>
-            <input
-              className="input text-2xl text-center"
-              id="title"
-              type="text"
-              value={newTitle}
-              onChange={handleTitleChange}
-              placeholder="Title"
-            />
-            {!newTitle && (
-              <p className="text-red-500 text-xs">
-                Please fill out this field.
-              </p>
-            )}
-          </div>
+          <Input
+            value={options.title}
+            type="text"
+            handleChange={options.handleTitleChange}
+            labelTitle={edit ? 'Budget title' : 'Transaction title'}
+            placeholder="Title"
+            warningShown={edit && !options.title}
+            handleEnterClick={options.handleButtonPrimaryClick}
+            inputClassName="text-2xl text-center"
+            className="w-2/3 mb-5"
+          />
 
-          <div className="w-2/3 mb-5">
-            <label htmlFor="title" className="text-xl">
-              Amount
-            </label>
-            <input
-              className={`${setMoneyColor(
-                parseFloat(newAmount)
-              )} input text-2xl text-center`}
-              id="title"
-              type="number"
-              value={newAmount}
-              onChange={handleAmountChange}
-              placeholder="amount"
-            />
-            {!newAmount && (
-              <p className="text-red-500 text-xs">
-                Please fill out this field.
-              </p>
-            )}
-          </div>
+          <Input
+            value={options.amount}
+            type="number"
+            handleChange={options.handleAmountChange}
+            labelTitle="Amount"
+            placeholder="Amount"
+            warningShown={!options.amount}
+            handleEnterClick={options.handleButtonPrimaryClick}
+            inputClassName={`text-2xl text-center ${setMoneyColor(
+              parseFloat(options.amount)
+            )}`}
+            className="w-2/3 mb-5"
+          />
         </div>
 
         <div className="flex">
-          <Button
-            title="Delete"
-            className="mt-2 text-gray-900 hover:bg-gray-900 hover:text-white border-2 border-gray-900 active:bg-gray-700 focus:outline-none focus:shadow-outline focus:border-gray-300"
-            onClick={onDelete}
+          <ButtonSecondary
+            title={edit ? 'Delete' : 'Cancel'}
+            color="gray-900"
+            onClick={options.handleButtonSecondaryClick}
+            className="mt-2"
           />
           <div className="w-10"></div>
           <Button
-            title="Save"
-            className="mt-2 bg-gray-900 text-white hover:bg-black border-4 border-gray-900 hover:border-black active:bg-gray-700 focus:outline-none focus:shadow-outline focus:border-gray-300"
-            onClick={handleButtonSaveClick}
-          />
-        </div>
-      </>
-    );
-  };
-
-  const renderTransaction = (): JSX.Element => {
-    return (
-      <>
-        <div className="items-center flex flex-col">
-          <div className="w-2/3 mb-5">
-            <label htmlFor="title" className="text-xl">
-              Transaction name
-            </label>
-            <input
-              className="input text-2xl text-center"
-              id="title"
-              type="text"
-              value={transactionTitle}
-              onChange={handletransactionTitleChange}
-              placeholder="Title"
-            />
-          </div>
-
-          <div className="w-2/3 mb-5">
-            <label htmlFor="title" className="text-xl">
-              Amount
-            </label>
-            <input
-              className={`${setMoneyColor(
-                parseFloat(transactionAmount)
-              )} input text-2xl text-center`}
-              id="title"
-              type="number"
-              value={transactionAmount}
-              onChange={handleTransactionAmountChange}
-              placeholder="amount"
-            />
-            {!transactionAmount && (
-              <p className="text-red-500 text-xs">
-                Please fill out this field.
-              </p>
-            )}
-          </div>
-        </div>
-
-        <div className="flex">
-          <Button
-            title="Cancel"
-            className="mt-2 text-gray-900 hover:bg-gray-900 hover:text-white border-2 border-gray-900 active:bg-gray-700 focus:outline-none focus:shadow-outline focus:border-gray-300"
-            onClick={close}
-          />
-          <div className="w-10"></div>
-          <Button
-            title="Add"
-            className="mt-2 bg-gray-900 text-white hover:bg-black border-4 border-gray-900 hover:border-black active:bg-gray-700 focus:outline-none focus:shadow-outline focus:border-gray-300"
-            onClick={handleButtonAddClick}
+            title={edit ? 'Save' : 'Add'}
+            color="gray-900"
+            className="mt-2"
+            onClick={options.handleButtonPrimaryClick}
           />
         </div>
       </>
@@ -198,26 +146,22 @@ const BudgetModal: FC<BudgetModalProps> = ({
   };
 
   return (
-    <Modal close={close}>
+    <Modal onClose={onClose}>
       <div
         className="m-auto mt-1/2 bg-white w-3/4 md:w-1/2 lg:w-1/3 2xl:w-1/4 shadow-2xl rounded-xl p-5"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex justify-between">
-          {edit ? (
-            <CashIcon
-              className="w-7 h-7 cursor-pointer"
-              onClick={handleEditClick}
-            />
-          ) : (
-            <CogIcon
-              className="w-7 h-7 cursor-pointer"
-              onClick={handleEditClick}
-            />
-          )}
-          <XIcon className="w-7 h-7 cursor-pointer" onClick={close} />
+          <span onClick={handleEditClick}>
+            {edit ? (
+              <CashIcon className="w-7 h-7 cursor-pointer" />
+            ) : (
+              <CogIcon className="w-7 h-7 cursor-pointer" />
+            )}
+          </span>
+          <XIcon className="w-7 h-7 cursor-pointer" onClick={onClose} />
         </div>
-        {edit ? renderBudgetEdit() : renderTransaction()}
+        {renderInputOptions()}
       </div>
     </Modal>
   );
